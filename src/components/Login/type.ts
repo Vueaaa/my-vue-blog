@@ -1,5 +1,5 @@
 export interface userForm {
-  nickname: string
+  username: string
   password: string
   confirmPwd?: string
   identifyCode?: string

@@ -13,8 +13,8 @@
     :before-close="handleClose"
   >
     <el-form v-show="isLogin" :model="form" :rules="loginRules" ref="loginRulesFormRef">
-      <el-form-item label="用户名" prop="nickname" :label-width="formLabelWidth">
-        <el-input v-model="form.nickname" autocomplete="off" />
+      <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+        <el-input v-model="form.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
         <el-input type="password" show-password v-model="form.password" autocomplete="off" />
@@ -22,13 +22,13 @@
     </el-form>
 
     <el-form v-show="!isLogin" :model="form" :rules="registerRules" ref="registerRulesFormRef">
-      <el-form-item label="用户名" prop="nickname" :label-width="formLabelWidth">
-        <el-input v-model="form.nickname" autocomplete="off" />
+      <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+        <el-input v-model="form.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
         <el-input show-password v-model="form.password" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
+      <!-- <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
         <el-input type="password" show-password v-model="form.confirmPwd" autocomplete="off" />
       </el-form-item>
       <el-form-item label="验证码" prop="identifyCode" :label-width="formLabelWidth">
@@ -36,7 +36,7 @@
       </el-form-item>
       <el-form-item>
         <img style="margin-left: 100px" :src="codeUrl" alt="" @click="getIdentifyCode" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <template #footer>
@@ -54,14 +54,14 @@
 import { FormRules } from 'element-plus/lib/components/form/src/types.js'
 import { ref, reactive } from 'vue'
 import { userForm } from './type'
-import { FormInstance } from 'element-plus'
+import { ElMessage, FormInstance } from 'element-plus'
 
 const dialogVisible = ref(false)
 
 const formLabelWidth = '120px'
 
 const form = reactive<userForm>({
-  nickname: '',
+  username: '',
   password: '',
   confirmPwd: '',
   identifyCode: ''
@@ -77,8 +77,9 @@ const showDialog = () => {
 }
 
 const isLogin = ref(true)
+
 const loginRules = reactive<FormRules<userForm>>({
-  nickname: [
+  username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
   ],
@@ -93,7 +94,7 @@ const loginRules = reactive<FormRules<userForm>>({
   ]
 })
 const registerRules = reactive<FormRules<userForm>>({
-  nickname: [
+  username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 3, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' }
   ],
@@ -116,6 +117,49 @@ const handleClose = () => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+
+const login = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid) => {
+    if (valid) {
+    }
+  })
+}
+const register = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid) => {
+    // if (valid) {
+    //   const res = await reqRegister(form)
+    //   if (res.data) {
+    //     ElMessage({
+    //       message: '注册成功',
+    //       type: 'success'
+    //     })
+    //     isLogin.value = true
+    //     resetForm(registerRulesFormRef.value)
+    //   } else if (res.data == null) {
+    //     ElMessage.error('用户已存在')
+    //   }
+    // } else {
+    //   ElMessage.error('请按格式输入用户密码')
+    // }
+    // http
+    //   .post('/api/user/register', form)
+    //   .then((response) => {
+    //     console.log(response, 'response')
+    //     ElMessage({
+    //       message: 'Congrats, this is a success message.',
+    //       type: 'success'
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     console.log('s----')
+    //     console.log(error.message, '!!!')
+    //     ElMessage.error('-------------')
+    //     ElMessage.error(error.message)
+    //   })
+  })
 }
 </script>
 
