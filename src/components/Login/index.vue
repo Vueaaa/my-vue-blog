@@ -55,7 +55,8 @@ import { FormRules } from 'element-plus/lib/components/form/src/types.js'
 import { ref, reactive } from 'vue'
 import { userForm } from './type'
 import { ElMessage, FormInstance } from 'element-plus'
-
+import service from '../../axios/index'
+import { useAuthStore } from '../../store/authStore'
 const dialogVisible = ref(false)
 
 const formLabelWidth = '120px'
@@ -123,42 +124,44 @@ const login = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
+      service
+        .post('/api/auth/login', form)
+        .then((response) => {
+          if (response.status === 201) {
+            const token = response.data?.token
+            const userInfo = response.data?.userInfo
+            useAuthStore().setToken(token)
+            useAuthStore().setUserInfo(userInfo)
+            dialogVisible.value = false
+            ElMessage({
+              message: '登录成功！！',
+              type: 'success'
+            })
+          }
+        })
+        .catch((error) => {
+          ElMessage.error(error.message || 'An error occurred.')
+        })
     }
   })
 }
 const register = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
-    // if (valid) {
-    //   const res = await reqRegister(form)
-    //   if (res.data) {
-    //     ElMessage({
-    //       message: '注册成功',
-    //       type: 'success'
-    //     })
-    //     isLogin.value = true
-    //     resetForm(registerRulesFormRef.value)
-    //   } else if (res.data == null) {
-    //     ElMessage.error('用户已存在')
-    //   }
-    // } else {
-    //   ElMessage.error('请按格式输入用户密码')
-    // }
-    // http
-    //   .post('/api/user/register', form)
-    //   .then((response) => {
-    //     console.log(response, 'response')
-    //     ElMessage({
-    //       message: 'Congrats, this is a success message.',
-    //       type: 'success'
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     console.log('s----')
-    //     console.log(error.message, '!!!')
-    //     ElMessage.error('-------------')
-    //     ElMessage.error(error.message)
-    //   })
+    service
+      .post('/api/user/register', form)
+      .then((response) => {
+        if (response.status === 201) {
+          dialogVisible.value = false
+          ElMessage({
+            message: '注册成功！！',
+            type: 'success'
+          })
+        }
+      })
+      .catch((error) => {
+        ElMessage.error(error.message || 'An error occurred.')
+      })
   })
 }
 </script>

@@ -9,9 +9,9 @@ export const useBlogStore = defineStore(
     return {
       isDark
     }
+  },
+  {
+    // 开启持久化（使用本地存储，默认是localStorage）
+    persist: true
   }
-  // {
-  //   // 开启持久化（使用本地存储，默认是localStorage）
-  //   persist: true
-  // }
 )

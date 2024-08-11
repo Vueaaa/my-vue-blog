@@ -47,7 +47,21 @@
             />
           </svg>
         </button> 
-        <Login></Login>
+        <Login v-if="!useAuthStore().userInfo"></Login>
+        <div v-else class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-ciyrcle avatar">
+            <div class="w-10 rounded-full">
+              <img v-if="!useAuthStore().userInfo?.avatar" src="@/assets/images/default.png" />
+              <img v-else :src="useAuthStore().userInfo?.avatar" />
+            </div>
+          </label>
+          <ul
+            tabindex="0"
+            class="mt-3 z-[1] summary-black p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box"
+          >
+            <li @click="logout"><a>退出</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -56,8 +70,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useDark,useToggle } from "@vueuse/core";
-import { useBlogStore } from '../../store/blog';
-
+import { useBlogStore } from '@/store/blog';
+import { useAuthStore } from '@/store/authStore';
 const isDark = useDark({
   selector: 'html',
   attribute: 'theme',
@@ -139,7 +153,15 @@ const menuList = [
   },
 ];
 onMounted(() => {
+  console.log('222');
+  console.log(useAuthStore().userInfo,'useAuthStore().userInfo');
+  console.log(useAuthStore(),'useAuthStore().userInfo11');
+  
   window.addEventListener('scroll', handleScroll)
+  if(useAuthStore().userInfo){
+    console.log('1111');
+  }
+ 
 })
 const handleScroll = () => {
   if (scrollTop.value < 1) {
@@ -158,6 +180,11 @@ const handleScroll = () => {
   }
 
   scrollTop.value = top
+}
+
+const logout = () => {
+  useAuthStore().clearToken
+  useAuthStore().clearUserInfo
 }
 </script>
 
