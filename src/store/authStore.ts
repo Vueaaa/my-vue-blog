@@ -7,15 +7,14 @@ export const useAuthStore = defineStore('auth', {
     token: '',
     userInfo: ref<User>()
   }),
+  persist: true,
   actions: {
     setToken(token: any) {
       this.token = token
-      // localStorage.setItem('token', token)
     },
 
     clearToken() {
       this.token = ''
-      // localStorage.removeItem('token')
     },
 
     setUserInfo(userInfo: any) {
@@ -26,5 +25,5 @@ export const useAuthStore = defineStore('auth', {
       this.userInfo = undefined
     }
   },
-  persist: true // 开启持久化存储
+
 })

@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useDark,useToggle } from "@vueuse/core";
 import { useBlogStore } from '@/store/blog';
 import { useAuthStore } from '@/store/authStore';
@@ -152,17 +152,9 @@ const menuList = [
     path: "/about"
   },
 ];
-onMounted(() => {
-  console.log('222');
-  console.log(useAuthStore().userInfo,'useAuthStore().userInfo');
-  console.log(useAuthStore(),'useAuthStore().userInfo11');
-  
-  window.addEventListener('scroll', handleScroll)
-  if(useAuthStore().userInfo){
-    console.log('1111');
-  }
- 
-})
+  onMounted(() => {
+        window.addEventListener('scroll', handleScroll);
+      });
 const handleScroll = () => {
   if (scrollTop.value < 1) {
     navbar.value.classList.add('scrollTop_zero')

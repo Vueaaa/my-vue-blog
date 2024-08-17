@@ -129,7 +129,7 @@ const login = async (formEl: FormInstance | undefined) => {
         .then((response) => {
           if (response.status === 201) {
             const token = response.data?.token
-            const userInfo = response.data?.userInfo
+            const userInfo = response.data?.user
             useAuthStore().setToken(token)
             useAuthStore().setUserInfo(userInfo)
             dialogVisible.value = false
