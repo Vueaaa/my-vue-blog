@@ -174,9 +174,11 @@ const handleScroll = () => {
   scrollTop.value = top
 }
 
+
+const user = useAuthStore()
 const logout = () => {
-  useAuthStore().clearToken
-  useAuthStore().clearUserInfo
+  user.clearToken()
+  user.clearUserInfo()
 }
 </script>
 
